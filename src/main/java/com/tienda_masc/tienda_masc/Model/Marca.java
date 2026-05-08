@@ -1,14 +1,11 @@
 package com.tienda_masc.tienda_masc.Model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,20 +13,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
-@Table (name = "productos")
-public class Productos {
+@Table (name = "marca")
+public class Marca {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer idProductos;
+    private Integer idMarca;
 
-    @NotBlank (message = "El nombre es obligatorio")
-    @Size (min = 3, max = 100, message = "El Nombre del producto debe tener entre 3 y 100 caracteres")
-    @Column(nullable = false, length = 50)
-    private String nombreProductos;
-
+    @NotBlank (message = "La marca tiene que tener nombre")
+    @Size (min = 2, max = 100, message = "El nombre de la marca tiene que tener de 2 a 100 caracteres")
+    private String nombreMarca;
 }
