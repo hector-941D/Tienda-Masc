@@ -38,7 +38,7 @@ public class BoletaController {
     public ResponseEntity<?> boletaPorId(@PathVariable Integer idBoleta){
         try{
             BoletaDTO boletas = boletaService.buscarPorId(idBoleta);
-            return new ResponseEntity<>(boletas, HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(boletas, HttpStatus.OK);
         }catch(RuntimeException e){
             return new ResponseEntity<>("No se encontró la boleta", HttpStatus.NOT_FOUND);
         }

@@ -2,14 +2,17 @@ package com.tienda_masc.tienda_masc.Model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -37,12 +40,6 @@ public class Boleta {
     @Column(name = "hora_emision", nullable = false, updatable = false)
     private LocalTime horaEmision;
 
-    @PrePersist
-    protected void crearFecha() {
-        this.fechaEmision = LocalDate.now();
-        this.horaEmision = LocalTime.now();
-    }
-
     @NotNull(message = "El neto es obligatorio")
     @Column(name = "monto_neto", nullable = false)
     private Integer montoNeto;
@@ -53,13 +50,29 @@ public class Boleta {
     @Column(name = "monto_total", nullable = false)
     private Integer montoTotal;
 
-    public enum MetodoPago {
-        EFECTIVO, DEBITO, CREDITO, TRANSFERENCIA
-    }
-
-    @NotNull(message = "El método de pago es obligatorio")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "metodo_pago", nullable = false, length = 20)
+    @ManyToOne
+    @JoinColumn(name = "id_metodo_pago", nullable = false)
     private MetodoPago metodoPago;
 
+    @ManyToOne
+    @JoinColumn(name = "id_metodo_envio")
+    private MetodoEnvio metodoEnvio;
+
+    @ManyToOne 
+    @JoinColumn(name = "id_cliente", nullable = false) 
+    private Cliente cliente;
+
+    @ManyToMany
+    @JoinTable(
+        name = "boleta_productos",
+        joinColumns = @JoinColumn(name = "id_boleta"),
+        inverseJoinColumns = @JoinColumn(name = "id_productos")
+    )
+    private List<Productos> productos;
+
+    @PrePersist
+    protected void crearFecha() {
+        this.fechaEmision = LocalDate.now();
+        this.horaEmision = LocalTime.now();
+    }
 }

@@ -9,12 +9,24 @@ import org.springframework.stereotype.Service;
 import com.tienda_masc.tienda_masc.DTO.BoletaDTO;
 import com.tienda_masc.tienda_masc.Model.Boleta;
 import com.tienda_masc.tienda_masc.Repository.BoletaRepository;
+import com.tienda_masc.tienda_masc.Repository.ClienteRepository;
+import com.tienda_masc.tienda_masc.Repository.MetodoEnvioRepository;
+import com.tienda_masc.tienda_masc.Repository.MetodoPagoRepository;
 
 @Service
 public class BoletaService {
 
     @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
     private BoletaRepository boletaRepository;
+
+    @Autowired
+    private MetodoPagoRepository metodoPagoRepository;
+
+    @Autowired
+    private MetodoEnvioRepository metodoEnvioRepository;
 
     public BoletaDTO crearBoleta(Boleta boleta) {
         String ultimoFolio = boletaRepository.findFirstByOrderByIdBoletaDesc()
@@ -29,6 +41,18 @@ public class BoletaService {
 
         boleta.setMontoIva(iva);
         boleta.setMontoTotal(total);
+
+        if (boleta.getCliente() != null) {
+        boleta.setCliente(clienteRepository.findById(boleta.getCliente().getIdCliente()).orElse(null));
+        }
+    
+        if (boleta.getMetodoPago() != null) {
+            boleta.setMetodoPago(metodoPagoRepository.findById(boleta.getMetodoPago().getIdMetodoPago()).orElse(null));
+        }
+    
+        if (boleta.getMetodoEnvio() != null) {
+            boleta.setMetodoEnvio(metodoEnvioRepository.findById(boleta.getMetodoEnvio().getIdMetodoEnvio()).orElse(null));
+        }
 
         Boleta boletaGuardada = boletaRepository.save(boleta);
         return convertirADTO(boletaGuardada);
@@ -57,10 +81,26 @@ public class BoletaService {
         boletaDTO.setMontoNeto(boleta.getMontoNeto());
         boletaDTO.setMontoIva(boleta.getMontoIva());
         boletaDTO.setMontoTotal(boleta.getMontoTotal());
-        if(boleta.getMetodoPago() != null) {
-            boletaDTO.setMetodoPago(boleta.getMetodoPago().toString());
+
+        if (boleta.getCliente() != null) {
+            boletaDTO.setIdCliente(boleta.getCliente().getIdCliente());
         }
+
+        if (boleta.getMetodoPago() != null) {
+            boletaDTO.setMetodoPago(boleta.getMetodoPago().getNombreMetodoPago());
+        }
+
+        if (boleta.getMetodoEnvio() != null) {
+            boletaDTO.setTipoEnvio(boleta.getMetodoEnvio().getTipoEnvio());
+        }
+        //boletaDTO.setProductos(boleta.getProductos());
+
+    /*
+    if(boleta.getProductos() != null) {
         
-        return boletaDTO;
+    }
+    */
+    
+    return boletaDTO;
     }
 }
