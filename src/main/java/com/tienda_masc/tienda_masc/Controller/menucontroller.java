@@ -1,4 +1,4 @@
-package com.tienda_masc.tienda_masc.controller;
+package com.tienda_masc.tienda_masc.Controller;
 
 public class menucontroller {
 
