@@ -2,37 +2,35 @@ package com.tienda_masc.tienda_masc.Model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table (name = "Tipo")
-public class Tipo {
+@Table (name = "Region")
+public class Region {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer idTipo;
+    private Integer idRegion;
 
-    @NotBlank (message = "El tipo de producto tiene que ser seleccionado")
-    @Size (min = 3, max = 100, message = "El nombre de la marca tiene que tener de 2 a 100 caracteres") 
-    private String nombreDelTipo;
+    @Column
+    private String nombreRegion;
     
-    @OneToMany(mappedBy = "tipo")
+    @OneToMany(mappedBy = "region")
     @ToString.Exclude
-    private List<Productos> productos;
+    private List<Comuna> comunas;
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tienda_masc.tienda_masc.DTO.TipoDTO;
 import com.tienda_masc.tienda_masc.Model.Tipo;
-import com.tienda_masc.tienda_masc.Services.Tipo;
+import com.tienda_masc.tienda_masc.Services.TipoService;
 
 @RestController
 @RequestMapping("/api/v1/Tipo")
@@ -23,7 +23,7 @@ public class TipoController {
 
     @GetMapping
     public ResponseEntity<List<TipoDTO>> obtenerTodos() {
-        return new ResponseEntity<>(TipoService.obtenerTodos(), HttpStatus.OK);
+        return new ResponseEntity<>(tipoService.obtenerTodos(), HttpStatus.OK);
     }
 
     @PostMapping
